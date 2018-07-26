@@ -1,0 +1,4 @@
+pluginname=ERPPlugin
+pluginclassname=ERPPlugin
+version=1.0
+origin=data-quest
