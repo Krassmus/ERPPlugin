@@ -9,6 +9,8 @@ class ERPPlugin extends StudIPPlugin implements SystemPlugin
     public function __construct()
     {
         parent::__construct();
+        PageLayout::addScript($this->getPluginURL()."/assets/erp.js");
+        $this->addStylesheet("assets/erp.less");
         if ($GLOBALS['perm']->have_perm("root")) {
             $nav = new Navigation(_("Formulare"), PluginEngine::getURL($this, array(), "admin/overview"));
             Navigation::addItem("/admin/config/forms", $nav);
