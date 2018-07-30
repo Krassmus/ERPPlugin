@@ -25,3 +25,16 @@
         <? endif ?>
     </tbody>
 </table>
+
+<?
+
+$actions = new ActionsWidget();
+if ($form->allowedToCreate()) {
+    $actions->addLink(
+        _("Neues Objekt erstellen"),
+        PluginEngine::getURL($plugin, array(), "form/edit/".$form->getId()),
+        Icon::create("add", "clickable"),
+        array('data-dialog' => 1)
+    );
+}
+Sidebar::Get()->addWidget($actions);

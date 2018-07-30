@@ -62,4 +62,11 @@ class ERPForm extends SimpleORMap
         }
         return array_keys($fields);
     }
+
+    public function allowedToCreate($user_id = null)
+    {
+        if ($GLOBALS['perm']->have_perm("root")) {
+            return true;
+        }
+    }
 }
