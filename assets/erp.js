@@ -12,6 +12,7 @@ STUDIP.ERP = {
         }
         newblock.data("block_id", block_id);
         newblock.find("legend input").val("Block " + (jQuery(".erp_editform form fieldset").length + 1));
+        newblock.find("legend input").attr("name", "form_settings[blocks][" + block_id + "][name]");
         newblock.appendTo(".erp_editform form");
 
         return false;

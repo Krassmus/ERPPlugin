@@ -2,6 +2,7 @@
 
 require_once __DIR__."/lib/ERPForm.php";
 require_once __DIR__."/lib/SQLQuery.php";
+require_once __DIR__."/lib/formelements/ERPFormElement.interface.php";
 
 class ERPPlugin extends StudIPPlugin implements SystemPlugin
 {

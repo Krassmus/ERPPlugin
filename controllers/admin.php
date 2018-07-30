@@ -93,6 +93,12 @@ class AdminController extends PluginController
     {
         PageLayout::setTitle(_("Formular bearbeiten"));
         $this->form = new ERPForm($form_id);
+        if (Request::isPost()) {
+            $this->form['form_settings'] = Request::getArray("form_settings");
+            $this->form->store();
+            PageLayout::postSuccess(_("Daten wurden gespeichert"));
+            $this->redirect("admin/overview");
+        }
     }
 
 
