@@ -14,4 +14,17 @@ class FormController extends PluginController
     {
     }
 
+    public function edit_action($form_id, $item_id = null)
+    {
+        $class = $this->form['sorm_class'];
+        $this->item = new $class($item_id);
+        if (Request::isPost()) {
+            $this->item->setData(Request::getArray("data"));
+            $this->item->store();
+            PageLayout::postSuccess(_("Daten wurden gespeichert."));
+            $this->redirect("form/overview/".$form_id);
+            return;
+        }
+    }
+
 }
