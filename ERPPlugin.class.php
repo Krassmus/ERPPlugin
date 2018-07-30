@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__."/lib/ERPForm.php";
+require_once __DIR__ . "/lib/ERPForm.php";
 
 class ERPPlugin extends StudIPPlugin implements SystemPlugin
 {
