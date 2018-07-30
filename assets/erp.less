@@ -25,7 +25,58 @@
         }
     }
 
-    .block_template {
+    form.default fieldset legend .header-options {
+        float: right;
+    }
+
+    .block_template, .element.element_template {
         display: none;
     }
+
+    .element {
+        display: flex;
+        padding-right: 10px;
+        .element_input {
+            display: block;
+            width: calc(100% - 50px);
+        }
+        .element_controls {
+            display: none;
+        }
+
+        .element_toggler {
+            max-width: 50px;
+            width: 50px;
+            .toggle_active {
+                display: none;
+            }
+            .toggle_inactive {
+                display: inline-block;
+            }
+        }
+        .actions {
+            margin-top: 11px;
+        }
+    }
+    .element.show_controls {
+        .actions {
+            margin-top: 0px;
+        }
+        border: 1px solid @content-color-40;
+        padding: 10px;
+        .element_input {
+            display: none;
+        }
+        .element_controls {
+            display: block;
+            width: calc(100% - 50px);
+        }
+        .element_toggler .toggle_active {
+            display: inline-block;
+        }
+        .element_toggler .toggle_inactive {
+            display: none;
+        }
+    }
+
 }

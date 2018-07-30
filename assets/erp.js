@@ -18,8 +18,20 @@ STUDIP.ERP = {
     },
     addNewElement: function () {
         var block = jQuery(this).closest("fieldset");
-        var element = jQuery('<label>Element <input type="text"></label>');
+        var element = jQuery(".erp_editform .element_template").clone();
+        element.removeClass("element_template");
+        element.addClass("show_controls");
         element.insertBefore(block.find(".add_element"));
+        return false;
+    },
+    removeBlock: function () {
+        jQuery(this).closest("fieldset").remove();
+    },
+    removeElement: function () {
+        jQuery(this).closest(".element").remove();
+    },
+    toggleElementControls: function () {
+        jQuery(this).closest(".element").toggleClass("show_controls");
         return false;
     }
 };
@@ -27,4 +39,7 @@ STUDIP.ERP = {
 jQuery(function () {
     jQuery(document).on("click", ".erp_editform .add_block", STUDIP.ERP.addNewBlock);
     jQuery(document).on("click", ".erp_editform .add_element", STUDIP.ERP.addNewElement);
+    jQuery(document).on("click", ".erp_editform legend .header-options a.trash", STUDIP.ERP.removeBlock);
+    jQuery(document).on("click", ".erp_editform element .element_remover", STUDIP.ERP.removeElement);
+    jQuery(document).on("click", ".erp_editform .element .element_toggler", STUDIP.ERP.toggleElementControls);
 });
