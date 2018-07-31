@@ -37,8 +37,21 @@
             <?= _("Nach welcher Spalte soll sortiert werden?") ?>
             <select name="data[overview_settings][sort]">
                 <? foreach ($fieldnames as $fieldname) : ?>
-                    <option value="<?= htmlReady($fieldname) ?>"><?= htmlReady($fieldname) ?></option>
+                    <option value="<?= htmlReady($fieldname) ?>"<?= $fieldname == $form['overview_settings']['sort'] ? " selected" : "" ?>>
+                        <?= htmlReady($fieldname) ?>
+                    </option>
                 <? endforeach ?>
+            </select>
+        </label>
+        <label>
+            <?= _("Wie soll sortiert werden?") ?>
+            <select name="data[overview_settings][sort_desc]">
+                <option value="0">
+                    <?= _("Aufsteigend") ?>
+                </option>
+                <option value="1"<?= $form['overview_settings']['sort_desc'] > 0 ? " selected" : "" ?>>
+                    <?= _("Absteigend") ?>
+                </option>
             </select>
         </label>
     </fieldset>
