@@ -153,7 +153,7 @@ class SQLQuery {
 
         $sql .= $this->getQuery();
 
-        $statement = DBManager::get()->prepare($sql);
+        $statement = \DBManager::get()->prepare($sql);
         $statement->execute((array) $this->settings['parameter']);
         $alldata = $statement->fetchAll(\PDO::FETCH_ASSOC);
         if (!$sorm_class) {

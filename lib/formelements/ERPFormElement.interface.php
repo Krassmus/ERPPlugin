@@ -10,7 +10,7 @@ interface ERPFormElement
 
     public function getSettingsTemplate();
 
-    public function getPreviewTemplate();
+    public function getPreviewTemplate($block_id, $element_id);
 
     public function getElement($name, $value);
 }

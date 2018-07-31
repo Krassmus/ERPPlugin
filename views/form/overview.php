@@ -1,10 +1,15 @@
+<? $overview_settings = $form['overview_settings'] ? $form['overview_settings']->getArrayCopy() : array() ?>
 <table class="default">
     <caption>
         <?= htmlReady($form['name']) ?>
     </caption>
     <thead>
         <tr>
-            <th></th>
+            <? foreach ((array) $overview_settings['fields'] as $fieldname) : ?>
+            <th>
+                <?= htmlReady($overview_settings['fielddata'][$fieldname]['title'] ?: $fieldname) ?>
+            </th>
+            <? endforeach ?>
             <th class="actions"><?= _("Aktionen") ?></th>
         </tr>
     </thead>
@@ -12,8 +17,14 @@
         <? if (count($items)) : ?>
         <? foreach ($items as $item) : ?>
             <tr>
-                <td></td>
-                <td>action</td>
+                <? foreach ((array) $overview_settings['fields'] as $fieldname) : ?>
+                    <td><?= htmlReady($item[$fieldname]) ?></td>
+                <? endforeach ?>
+                <td class="actions">
+                    <a href="<?= PluginEngine::getLink($plugin, array(), "form/edit/".$form->getId()."/".$item->getId()) ?>" data-dialog>
+                        <?= Icon::create("edit", "clickable")->asImg(20, array('class' => "text-bottom")) ?>
+                    </a>
+                </td>
             </tr>
         <? endforeach ?>
         <? else : ?>

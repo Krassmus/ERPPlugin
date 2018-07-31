@@ -48,7 +48,7 @@
     <fieldset class="block_template">
         <legend>
             <span class="header-options">
-                <a href="#">
+                <a href="#" class="trash">
                     <?= Icon::create("trash", "clickable")->asImg(20, array('class' => "text-bottom")) ?>
                 </a>
             </span>
