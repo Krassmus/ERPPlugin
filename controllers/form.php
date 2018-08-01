@@ -18,6 +18,9 @@ class FormController extends PluginController
         $sorm_metadata = $object->getTableMetadata();
 
         $query = \ERP\SQLQuery::table($sorm_metadata['table']);
+        if ($this->form['overview_settings']['sort']) {
+            $query->orderBy($this->form['overview_settings']['sort']. " ".($this->form['overview_settings']['sort_desc'] ? "DESC" : "ASC"));
+        }
         if ($query->count() <= 500) {
             $this->items = $query->fetchAll($class);
         } else {
@@ -33,6 +36,18 @@ class FormController extends PluginController
             $this->item->setData(Request::getArray("data"));
             $this->item->store();
             PageLayout::postSuccess(_("Daten wurden gespeichert."));
+            $this->redirect("form/overview/".$form_id);
+            return;
+        }
+    }
+
+    public function delete_action($form_id, $item_id)
+    {
+        $class = $this->form['sorm_class'];
+        $this->item = new $class($item_id);
+        if (Request::isPost()) {
+            $this->item->delete();
+            PageLayout::postSuccess(_("Objekt wurde gelöscht."));
             $this->redirect("form/overview/".$form_id);
             return;
         }
