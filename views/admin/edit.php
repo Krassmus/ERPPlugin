@@ -71,6 +71,33 @@
         </ul>
     </fieldset>
 
+    <fieldset>
+        <legend><?= _("Relationen") ?></legend>
+        <ul class="clean">
+            <li>
+                <label>
+                    <?= _("Name der SORM-Klasse") ?>
+                    <input type="text">
+                </label>
+                <label>
+                    <?= _("ON-Statement") ?>
+                    <textarea placeholder="seminar_user.Seminar_id = seminare.Seminar_id AND seminar_user.status = 'dozent'"></textarea>
+                </label>
+                <label>
+                    <?= _("Menge der Einträge") ?>
+                    <select name="">
+                        <option value="has_many">
+                            <?= _("Mehrere Einträge (1:n)") ?>
+                        </option>
+                        <option value="has_one">
+                            <?= _("Einzelner Eintrag (1:1)") ?>
+                        </option>
+                    </select>
+                </label>
+            </li>
+        </ul>
+    </fieldset>
+
     <div data-dialog-button>
         <?= \Studip\Button::create(_("Speichern")) ?>
     </div>
