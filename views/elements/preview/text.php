@@ -1,4 +1,7 @@
-<label>
-    <?= _("Label Dir einen") ?>
-    <input type="text" name="form_settings[blocks][:block_id][:element_id][placeholder]" value="<?= htmlReady($form['form_settings'][$block_id][$element]['placeholder']) ?>">
-</label>
+<input type="text"
+       name="form_settings[blocks][<?= htmlReady($block_id) ?>][elements][<?= htmlReady($element_id) ?>][label]"
+       value="<?= $form['form_settings']['blocks'][$block_id]['elements'][$element_id]['label'] ?: _("Tragen Sie bitte was ein") ?>"
+       required>
+<input type="text"
+       name="form_settings[blocks][<?= htmlReady($block_id) ?>][elements][<?= htmlReady($element_id) ?>][placeholder]"
+       value="<?= htmlReady($form['form_settings']['blocks'][$block_id]['elements'][$element_id]['placeholder']) ?>">

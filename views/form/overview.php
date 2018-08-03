@@ -1,4 +1,5 @@
 <? $overview_settings = $form['overview_settings'] ? $form['overview_settings']->getArrayCopy() : array() ?>
+<? $form_settings = $form['form_settings'] ? $form['form_settings']->getArrayCopy() : array() ?>
 <table class="default">
     <caption>
         <?= htmlReady($form['name']) ?>
@@ -18,7 +19,23 @@
         <? foreach ($items as $item) : ?>
             <tr>
                 <? foreach ((array) $overview_settings['fields'] as $fieldname) : ?>
-                    <td><?= htmlReady($item[$fieldname]) ?></td>
+                    <td>
+                        <?
+                        $mapped_value = null;
+                        foreach ((array) $form_settings['blocks'] as $block_id => $block_data) {
+                            foreach ((array) $block_data['elements'] as $element_id => $element_data) {
+                                if ($element_data['field'] === $fieldname && $element_data['type']) {
+                                    $class = $element_data['type'];
+                                    $element_object = new $class($form);
+                                    $mapped_value = $element_object->mapValue($item[$fieldname]);
+                                    break 2;
+                                }
+                            }
+                        } ?>
+                        <?= htmlReady($mapped_value
+                            ? (is_a($mapped_value, "Flexi_Template") ? $mapped_value->render() : $mapped_value)
+                            : $item[$fieldname]) ?>
+                    </td>
                 <? endforeach ?>
                 <td class="actions">
                     <a href="<?= PluginEngine::getLink($plugin, array(), "form/edit/".$form->getId()."/".$item->getId()) ?>" data-dialog>

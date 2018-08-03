@@ -4,13 +4,17 @@ interface ERPFormElement
 {
     static function forDataType();
 
+    static public function getName();
+
     static function forFieldNames();
 
     public function __construct(ERPForm $form);
 
-    public function getSettingsTemplate();
+    public function getSettingsTemplate($block_id, $element_id);
 
     public function getPreviewTemplate($block_id, $element_id);
 
-    public function getElement($name, $value);
+    public function getElement($block_id, $element_id, $name, $value);
+
+    public function mapValue($value);
 }

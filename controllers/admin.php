@@ -95,10 +95,29 @@ class AdminController extends PluginController
         $this->form = new ERPForm($form_id);
         if (Request::isPost()) {
             $this->form['form_settings'] = Request::getArray("form_settings");
-            $this->form->store();
+            $success = $this->form->store();
             PageLayout::postSuccess(_("Daten wurden gespeichert"));
             $this->redirect("admin/overview");
         }
+        $this->form_element_classes = array_filter(get_declared_classes(), function ($c) {
+            return is_subclass_of($c, "ERPFormElement");
+        });
+    }
+
+    public function get_form_settings_action()
+    {
+        $this->form = new ERPForm(Request::option("form_id"));
+        $class = Request::get("erp_form_element");
+        if (!is_subclass_of($class, "ERPFormElement")) {
+            throw new Exception(_("Form-Element hat falsche Klasse"));
+        }
+        $form_element = new $class($this->form);
+        $output = array();
+        $template = $form_element->getSettingsTemplate(Request::option("block_id"), Request::option("element_id"));
+        $output['settings'] = $template ? $template->render() : null;
+        $template = $form_element->getPreviewTemplate(Request::option("block_id"), Request::option("element_id"));
+        $output['preview'] = $template ? $template->render() : null;
+        $this->render_json($output);
     }
 
 

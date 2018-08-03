@@ -22,12 +22,26 @@ STUDIP.ERP = {
         var element = jQuery(".erp_editform .element_template").clone();
         element.removeClass("element_template");
         element.addClass("show_controls");
+
+        var element_id = "e_" + Math.floor(Math.random() * 1000000);
+        var element_ids = [];
+        jQuery(".erp_editform form .element").each(function () {
+            element_ids.push(jQuery(this).data("element_id"));
+        });
+        while (_.includes(element_ids, element_id)) {
+            element_id = "e_" + Math.floor(Math.random() * 1000000);
+        }
+        element.data("element_id", element_id);
+        element.find(".element_controls select, input").each(function () {
+            jQuery(this).attr("name", jQuery(this).attr("name").replace(":block_id", block.data("block_id")));
+            jQuery(this).attr("name", jQuery(this).attr("name").replace(":element_id", element_id));
+        });
+
         element.insertBefore(block.find(".add_element"));
         return false;
     },
     removeBlock: function () {
         var element = jQuery(this).closest("fieldset");
-        console.log(element);
         STUDIP.Dialog.confirm("Wirklich löschen?", function () {
             element.fadeOut(300, function () {
                 element.remove();
@@ -45,8 +59,29 @@ STUDIP.ERP = {
         return false;
     },
     toggleElementControls: function () {
-        jQuery(this).closest(".element").toggleClass("show_controls");
+        var element = jQuery(this).closest(".element");
+        element.toggleClass("show_controls");
+        element.find("input.show_controls").val(element.hasClass("show_controls") ? 1 : 0);
         return false;
+    },
+    selectFormElement: function () {
+        var element = jQuery(this).closest(".element");
+        var block_id = jQuery(this).closest("fieldset").data("block_id");
+        var element_id = jQuery(this).closest(".element").data("element_id");
+        var form_id = jQuery(this).closest("form").data("form_id");
+        jQuery.ajax({
+            "url": STUDIP.URLHelper.getURL("plugins.php/erpplugin/admin/get_form_settings"),
+            "data": {
+                "erp_form_element": jQuery(this).val(),
+                'block_id': block_id,
+                'element_id': element_id,
+                'form_id': form_id
+            },
+            "success": function (json) {
+                jQuery(element).find(".form_type_settings").html(json.settings ? json.settings : "");
+                jQuery(element).find(".element_input").html(json.preview ? json.preview : "");
+            }
+        });
     }
 };
 
@@ -56,4 +91,5 @@ jQuery(function () {
     jQuery(document).on("click", ".erp_editform legend .header-options a.trash", STUDIP.ERP.removeBlock);
     jQuery(document).on("click", ".erp_editform .element .element_remover", STUDIP.ERP.removeElement);
     jQuery(document).on("click", ".erp_editform .element .element_toggler", STUDIP.ERP.toggleElementControls);
+    jQuery(document).on("click", ".erp_editform .erp_form_element", STUDIP.ERP.selectFormElement);
 });

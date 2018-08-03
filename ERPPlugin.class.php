@@ -8,11 +8,7 @@ foreach (scandir(__DIR__."/lib/formelements") as $file) {
         include_once __DIR__."/lib/formelements/".$file;
     }
 }
-foreach (scandir(__DIR__."/lib/mapper") as $file) {
-    if ($file[0] !== ".") {
-        include_once __DIR__."/lib/mapper/".$file;
-    }
-}
+
 
 class ERPPlugin extends StudIPPlugin implements SystemPlugin
 {

@@ -1,23 +1,23 @@
 <?php
 
-class ERPTextFormElement implements ERPFormElement
+class ERPSemesterFormElement implements ERPFormElement
 {
 
     protected $form = null;
 
     static public function getName()
     {
-        return _("Textzeile");
+        return _("Semester");
     }
 
     static function forDataType()
     {
-        return array("varchar", "text");
+        return array("varchar");
     }
 
     static function forFieldNames()
     {
-        return true;
+        return array("start_time", "semester_id");
     }
 
     public function __construct(ERPForm $form)
@@ -27,13 +27,18 @@ class ERPTextFormElement implements ERPFormElement
 
     public function getSettingsTemplate($block_id, $element_id)
     {
-        return null;
+        $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
+        $template = $tf->open("elements/settings/semester.php");
+        $template->block_id = $block_id;
+        $template->element_id = $element_id;
+        $template->form = $this->form;
+        return $template;
     }
 
     public function getPreviewTemplate($block_id, $element_id)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/preview/text.php");
+        $template = $tf->open("elements/preview/semester.php");
         $template->form = $this->form;
         $template->block_id = $block_id;
         $template->element_id = $element_id;
@@ -43,7 +48,7 @@ class ERPTextFormElement implements ERPFormElement
     public function getElement($block_id, $element_id, $name, $value)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/formelement/text.php");
+        $template = $tf->open("elements/formelement/semester.php");
         $template->form = $this->form;
         $template->block_id = $block_id;
         $template->element_id = $element_id;
@@ -54,6 +59,13 @@ class ERPTextFormElement implements ERPFormElement
 
     public function mapValue($value)
     {
-        return $value;
+        if (is_numeric($value)) {
+            $semester = Semester::findByTimestamp($value);
+        } else {
+            $semester = Semester::find($value);
+        }
+        if ($semester) {
+            return $semester['name'];
+        }
     }
 }
