@@ -37,7 +37,7 @@ STUDIP.ERP = {
             jQuery(this).attr("name", jQuery(this).attr("name").replace(":element_id", element_id));
         });
 
-        element.insertBefore(block.find(".add_element"));
+        element.appendTo(block.find(".elements_sortable"));
         return false;
     },
     removeBlock: function () {

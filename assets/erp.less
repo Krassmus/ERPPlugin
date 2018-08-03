@@ -35,6 +35,9 @@
     }
 
     .element {
+        &:first-child {
+            margin-top: 10px;
+        }
         display: flex;
         padding-right: 10px;
         margin-bottom: 10px;
@@ -43,7 +46,7 @@
         }
         .element_input {
             display: block;
-            width: calc(100% - 50px);
+            width: calc(100% - 70px);
         }
         .element_controls {
             display: none;
@@ -74,7 +77,7 @@
         }
         .element_controls {
             display: block;
-            width: calc(100% - 50px);
+            width: calc(100% - 70px);
         }
         .element_toggler .toggle_active {
             display: inline-block;

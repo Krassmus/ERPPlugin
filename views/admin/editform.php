@@ -33,6 +33,7 @@
                                value="<?= htmlReady($blockdata['name']) ?>">
                     </legend>
 
+                    <div class="elements_sortable">
                     <? foreach ((array) $blockdata['elements'] as $element_id => $element_data) : ?>
                         <?= $this->render_partial("form/_element", array(
                                 'block_id' => $block_id,
@@ -41,6 +42,7 @@
                                 'form_element_classes' => $form_element_classes)
                         ) ?>
                     <? endforeach ?>
+                    </div>
 
                     <a class="add_element" href="#">
                         <?= Icon::create("add", "clickable")->asImg(20) ?>
@@ -67,6 +69,8 @@
             <input type="text">
         </legend>
 
+        <div class="elements_sortable"></div>
+
         <a class="add_element" href="#">
             <?= Icon::create("add", "clickable")->asImg(20) ?>
             <?= _("Element hinzufügen") ?>
@@ -86,3 +90,11 @@
         <?= _("Block hinzufügen") ?>
     </a>
 </div>
+<script>
+    jQuery(function () {
+        jQuery(".erp_editform .elements_sortable").sortable({
+            "handle": ".drag",
+            "axis": "y"
+        });
+    })
+</script>

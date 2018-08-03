@@ -52,6 +52,9 @@ $element_data || $element_data = $form_settings['blocks'][$block_id]['elements']
         </div>
     </div>
     <div class="actions">
+        <a href="#" class="drag">
+            <?= Assets::img("anfasser_24.png", array('class' => "text-bottom")) ?>
+        </a>
         <a href="#" class="element_toggler">
             <?= Icon::create("admin", "inactive")->asImg(20, array('class' => "text-bottom toggle_inactive")) ?>
             <?= Icon::create("admin+add", "clickable")->asImg(20, array('class' => "text-bottom toggle_active")) ?>
