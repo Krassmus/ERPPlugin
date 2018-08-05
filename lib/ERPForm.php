@@ -52,11 +52,12 @@ class ERPForm extends SimpleORMap
 
     public function getTableFields()
     {
-        $sorm_class = $this['sorm_class'];
-        $object = new $sorm_class();
+        //$sorm_class = $this['sorm_class'];
+        //$object = new $sorm_class();
+        $object = PseudoSorm::create($this['sorm_class']);
         $sorm_metadata = $object->getTableMetadata();
         $fields = $sorm_metadata['fields'];
-        if ($sorm_class === "User") {
+        if ($this['sorm_class'] === "User") {
             $userinfometadata = $object->info->getTableMetadata();
             $fields = array_merge($fields, $userinfometadata['fields']);
         }

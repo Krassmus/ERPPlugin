@@ -140,6 +140,7 @@ class SQLQuery {
     /**
      * Fetches the whole resultset as an array of associative arrays. If you define
      * a sorm_class the result will be an array of the sorm-objects.
+     * @param $sorm_class : name of a SimpleORMap class, a db table or null
      * @return array of arrays or array of objects.
      */
     public function fetchAll($sorm_class = null)
@@ -161,7 +162,7 @@ class SQLQuery {
         } else {
             $objects = array();
             foreach ($alldata as $data) {
-                $object = new $sorm_class();
+                $object = \PseudoSorm::create($sorm_class);
                 $object->setData($data);
                 $object->setNew(false);
                 $objects[] = $object;

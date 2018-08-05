@@ -2,6 +2,11 @@
 
 require_once __DIR__."/lib/ERPForm.php";
 require_once __DIR__."/lib/SQLQuery.php";
+if (version_compare(phpversion(), "7.0", ">=")) {
+    require_once __DIR__ . "/lib/PseudoSORM.php";
+} else {
+    require_once __DIR__ . "/lib/5xPseudoSORM.php";
+}
 require_once __DIR__."/lib/formelements/ERPFormElement.interface.php";
 foreach (scandir(__DIR__."/lib/formelements") as $file) {
     if ($file[0] !== ".") {

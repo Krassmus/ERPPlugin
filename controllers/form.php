@@ -13,8 +13,9 @@ class FormController extends PluginController
 
     public function overview_action($form_id)
     {
-        $class = $this->form['sorm_class'];
-        $object = new $class();
+        //$class = $this->form['sorm_class'];
+        //$object = new $class();
+        $object = PseudoSorm::create($this->form['sorm_class']);
         $sorm_metadata = $object->getTableMetadata();
 
         $query = \ERP\SQLQuery::table($sorm_metadata['table']);
@@ -22,7 +23,7 @@ class FormController extends PluginController
             $query->orderBy($this->form['overview_settings']['sort']. " ".($this->form['overview_settings']['sort_desc'] ? "DESC" : "ASC"));
         }
         if ($query->count() <= 500) {
-            $this->items = $query->fetchAll($class);
+            $this->items = $query->fetchAll($this->form['sorm_class']); //TODO create anomymous class
         } else {
             PageLayout::postInfo(_("Geben Sie mehr Filter ein."));
         }
@@ -31,8 +32,9 @@ class FormController extends PluginController
     public function edit_action($form_id, $item_id = null)
     {
         PageLayout::setTitle(_("Objekt bearbeiten"));
-        $class = $this->form['sorm_class'];
-        $this->item = new $class($item_id);
+        //$class = $this->form['sorm_class'];
+        //$this->item = new $class($item_id);
+        $this->item = PseudoSorm::create($this->form['sorm_class'], $item_id);
         if (Request::isPost()) {
             $this->item->setData(Request::getArray("data"));
             $this->item->store();
@@ -44,8 +46,9 @@ class FormController extends PluginController
 
     public function delete_action($form_id, $item_id)
     {
-        $class = $this->form['sorm_class'];
-        $this->item = new $class($item_id);
+        //$class = $this->form['sorm_class'];
+        //$this->item = new $class($item_id);
+        $this->item = PseudoSorm::create($this->form['sorm_class'], $item_id);
         if (Request::isPost()) {
             $this->item->delete();
             PageLayout::postSuccess(_("Objekt wurde gelöscht."));

@@ -78,11 +78,12 @@ class AdminController extends PluginController
             $this->redirect("admin/overview");
         }
 
-        $sorm_class = $this->form['sorm_class'];
-        $object = new $sorm_class();
+        //$sorm_class = $this->form['sorm_class'];
+        //$object = new $sorm_class();
+        $object = PseudoSorm::create($this->form['sorm_class']);
         $sorm_metadata = $object->getTableMetadata();
         $fields = $sorm_metadata['fields'];
-        if ($sorm_class === "User") {
+        if ($this->form['sorm_class'] === "User") {
             $userinfometadata = $object->info->getTableMetadata();
             $fields = array_merge($fields, $userinfometadata['fields']);
         }

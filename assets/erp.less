@@ -22,7 +22,7 @@
         font-weight: 700;
         width: calc(100% - 40px);
         &:focus {
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: @activity-color-20;
         }
     }
 
@@ -50,6 +50,14 @@
         }
         .element_controls {
             display: none;
+        }
+
+        .label-input {
+            border: none;
+            font-weight: bold;
+            &:focus {
+                background-color: @activity-color-20;
+            }
         }
 
         .element_toggler {
