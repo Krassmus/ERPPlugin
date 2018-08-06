@@ -14,6 +14,7 @@ class AdminController extends PluginController
 
     public function overview_action()
     {
+        SimpleORMap::expireTableScheme();
         $this->forms = ERPForm::findAll();
     }
 
