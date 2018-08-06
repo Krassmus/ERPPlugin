@@ -22,7 +22,7 @@
         font-weight: 700;
         width: calc(100% - 40px);
         &:focus {
-            background-color: @activity-color-20;
+            background-color: @activity-color-40;
         }
     }
 
@@ -50,13 +50,17 @@
         }
         .element_controls {
             display: none;
+
+            .select2-container {
+                max-width: 48em;
+            }
         }
 
         .label-input {
             border: none;
             font-weight: bold;
             &:focus {
-                background-color: @activity-color-20;
+                background-color: @activity-color-40;
             }
         }
 
@@ -94,6 +98,8 @@
             display: none;
         }
     }
+
+
 
 }
 .mapper {

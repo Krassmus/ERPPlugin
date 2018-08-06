@@ -41,6 +41,21 @@ $element_data || $element_data = $form_settings['blocks'][$block_id]['elements']
                 </option>
             <? endforeach ?>
         </select>
+        <select name="form_settings[blocks][<?= htmlReady($block_id) ?>][elements][<?= htmlReady($element_id) ?>][edit_permissions][]"
+                multiple
+                class="multiple"
+                aria-label="<?= _("Welche Rollen dürfen das Formularelement bearbeiten?") ?>"
+                style="width: 100%; max-width: 48em;">
+            <option value="all"<?= in_array("all", (array) $element_data['edit_permissions']) || $element_data['edit_permissions'] === null ? " selected" : "" ?>><?= _("Alle") ?></option>
+            <? $roles = $form->getRoles() ?>
+            <? foreach (RolePersistence::getAllRoles() as $role) : ?>
+                <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
+                    <option value="<?= htmlReady($role->getRoleid()) ?>"<?= in_array($role->getRoleid(), (array) $element_data['edit_permissions']) ? " selected" : "" ?>>
+                        <?= htmlReady($role->getRolename()) ?>
+                    </option>
+                <? endif ?>
+            <? endforeach ?>
+        </select>
         <div class="form_type_settings">
             <? if ($element_data['type']) {
                 $form_element = new $element_data['type']($form);

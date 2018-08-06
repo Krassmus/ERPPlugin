@@ -2,7 +2,11 @@
 <label>
     <?= htmlReady($form_settings['blocks'][$block_id]['elements'][$element_id]['label']) ?>
     <textarea
-           name="<?= htmlReady($name) ?>"
+            <? if (!$readonly) : ?>
+                name="<?= htmlReady($name) ?>"
+            <? else : ?>
+                readonly disabled
+            <? endif ?>
            placeholder="<?= htmlReady($form['form_settings']['blocks'][$block_id]['elements'][$element_id]['placeholder']) ?>"
         ><?= htmlReady($value) ?></textarea>
 </label>

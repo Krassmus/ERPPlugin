@@ -65,7 +65,7 @@ class ERPSelectFormElement implements ERPFormElement
         return $template;
     }
 
-    public function getElement($block_id, $element_id, $name, $value)
+    public function getElement($block_id, $element_id, $name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
         $template = $tf->open("elements/formelement/select.php");
@@ -94,6 +94,7 @@ class ERPSelectFormElement implements ERPFormElement
         }
         $template->name = $name;
         $template->value = $value;
+        $template->readonly = $readonly;
         return $template;
     }
 

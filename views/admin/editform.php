@@ -96,5 +96,6 @@
             "handle": ".drag",
             "axis": "y"
         });
+        jQuery("select.multiple").select2({width: 'resolve'});
     })
 </script>

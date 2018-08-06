@@ -20,7 +20,11 @@
         </label>
 
         <label class="required">
-            <?= _("SORM-Klasse") ?>
+            <? if (version_compare(phpversion(), "7.0", ">=")) : ?>
+                <?= _("SORM-Klasse oder Tabellenname") ?>
+            <? else : ?>
+                <?= _("SORM-Klasse") ?>
+            <? endif ?>
             <input type="text" name="data[sorm_class]" value="<?= htmlReady($form['sorm_class']) ?>" required>
         </label>
 

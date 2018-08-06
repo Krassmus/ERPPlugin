@@ -1,6 +1,10 @@
 <label>
     <?= htmlReady($form['form_settings']['blocks'][$block_id]['elements'][$element_id]['label']) ?>
-    <select name="<?= htmlReady($name) ?>">
+    <select <? if (!$readonly) : ?>
+            name="<?= htmlReady($name) ?>"
+        <? else : ?>
+            readonly disabled
+        <? endif ?>>
         <option value=""></option>
         <? foreach (array_reverse(Semester::getAll()) as $semester) : ?>
             <?

@@ -40,7 +40,7 @@ class ERPTextFormElement implements ERPFormElement
         return $template;
     }
 
-    public function getElement($block_id, $element_id, $name, $value)
+    public function getElement($block_id, $element_id, $name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
         $template = $tf->open("elements/formelement/text.php");
@@ -49,6 +49,7 @@ class ERPTextFormElement implements ERPFormElement
         $template->element_id = $element_id;
         $template->name = $name;
         $template->value = $value;
+        $template->readonly = $readonly;
         return $template;
     }
 

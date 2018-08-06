@@ -14,7 +14,7 @@ interface ERPFormElement
 
     public function getPreviewTemplate($block_id, $element_id);
 
-    public function getElement($block_id, $element_id, $name, $value);
+    public function getElement($block_id, $element_id, $name, $value, $readonly);
 
     public function mapValue($value);
 }

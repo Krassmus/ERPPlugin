@@ -36,7 +36,33 @@ class FormController extends PluginController
         //$this->item = new $class($item_id);
         $this->item = PseudoSorm::create($this->form['sorm_class'], $item_id);
         if (Request::isPost()) {
-            $this->item->setData(Request::getArray("data"));
+            $data = Request::getArray("data");
+            //check for permissions
+            $form_settings = (array) ($this->form['form_settings'] ? $this->form['form_settings']->getArrayCopy() : array());
+            if (!$GLOBALS['perm']->have_perm("root")) {
+                $roles = RolePersistence::getAssignedRoles($GLOBALS['user']->id, true);
+                $role_ids = array_keys($roles);
+                $allowed_fields = array();
+                foreach ((array) $form_settings['blocks'] as $block) {
+                    foreach ((array) $block['elements'] as $element) {
+                        if ($element['field']
+                                && (in_array("all", (array) $element['edit_permissions'])
+                                    || count(array_intersect($role_ids, (array) $element['edit_permissions'])))) {
+                            $allowed_fields[] = $element['field'];
+                        }
+                    }
+                }
+                $allowed_data = array();
+                foreach ($data as $i => $value) {
+                    if (in_array($i, $allowed_fields)) {
+                        $allowed_data[$i] = $value;
+                    }
+                }
+            } else {
+                $allowed_data = $data;
+            }
+
+            $this->item->setData($allowed_data);
             $this->item->store();
             PageLayout::postSuccess(_("Daten wurden gespeichert."));
             $this->redirect("form/overview/".$form_id);
