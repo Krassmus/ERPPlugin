@@ -13,10 +13,8 @@
                 <?
                 if ($element_data['type']) {
                     $class = $element_data['type'];
-                    $form_element = new $class($form);
+                    $form_element = new $class($form, $block_id, $element_id);
                     $template = $form_element->getElement(
-                        $block_id,
-                        $element_id,
                         "data[".$element_data['field']."]",
                         $item[$element_data['field']],
                         !(in_array("all", (array) $element_data['edit_permissions'])

@@ -1,6 +1,6 @@
 <?php
 
-class ERPSemesterFormElement implements ERPFormElement
+class ERPQuicksearchFormElement implements ERPFormElement
 {
 
     protected $form = null;
@@ -9,7 +9,7 @@ class ERPSemesterFormElement implements ERPFormElement
 
     static public function getName()
     {
-        return _("Semester");
+        return _("Quicksearch (SQL)");
     }
 
     static function forDataType()
@@ -19,7 +19,7 @@ class ERPSemesterFormElement implements ERPFormElement
 
     static function forFieldNames()
     {
-        return array("start_time", "semester_id");
+        return true;
     }
 
     public function __construct(ERPForm $form, $block_id, $element_id)
@@ -32,17 +32,17 @@ class ERPSemesterFormElement implements ERPFormElement
     public function getSettingsTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/settings/semester.php");
+        $template = $tf->open("elements/settings/quicksearch.php");
+        $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
-        $template->form = $this->form;
         return $template;
     }
 
     public function getPreviewTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/preview/semester.php");
+        $template = $tf->open("elements/preview/quicksearch.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -52,26 +52,25 @@ class ERPSemesterFormElement implements ERPFormElement
     public function getElement($name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/formelement/semester.php");
+        $template = $tf->open("elements/formelement/quicksearch.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
         $template->name = $name;
         $template->value = $value;
         $template->readonly = $readonly;
+        $template->search = new SQLSearch(
+            $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'],
+            $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['placeholder']
+        );
         return $template;
     }
 
     public function mapValue($value)
     {
-        if (is_numeric($value)) {
-            $semester = Semester::findByTimestamp($value);
-        } else {
-            $semester = Semester::find($value);
-        }
-        if ($semester) {
-            return $semester['name'];
-        }
+        //Should display the name
+        $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'];
+        return $value;
     }
 
     public function mapBeforeStoring($value)

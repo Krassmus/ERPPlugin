@@ -8,13 +8,17 @@ interface ERPFormElement
 
     static function forFieldNames();
 
-    public function __construct(ERPForm $form);
+    public function __construct(ERPForm $form, $block_id, $element_id);
 
-    public function getSettingsTemplate($block_id, $element_id);
+    public function getSettingsTemplate();
 
-    public function getPreviewTemplate($block_id, $element_id);
+    public function getPreviewTemplate();
 
-    public function getElement($block_id, $element_id, $name, $value, $readonly);
+    public function getElement($name, $value, $readonly);
 
     public function mapValue($value);
+
+    public function mapBeforeStoring($value);
+
+    public function hookAfterStoring($newvalue, $oldvalue);
 }

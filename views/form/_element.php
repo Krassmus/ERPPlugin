@@ -12,8 +12,8 @@ $element_data || $element_data = $form_settings['blocks'][$block_id]['elements']
            value="<?= $isTemplate || $element_data['show_controls'] ? 1 : 0 ?>">
     <div class="element_input">
         <? if ($element_data['type']) {
-            $form_element = new $element_data['type']($form);
-            $template = $form_element->getPreviewTemplate($block_id, $element_id);
+            $form_element = new $element_data['type']($form, $block_id, $element_id);
+            $template = $form_element->getPreviewTemplate();
             if ($template) {
                 echo $template->render();
             }
@@ -58,8 +58,8 @@ $element_data || $element_data = $form_settings['blocks'][$block_id]['elements']
         </select>
         <div class="form_type_settings">
             <? if ($element_data['type']) {
-                $form_element = new $element_data['type']($form);
-                $template = $form_element->getSettingsTemplate($block_id, $element_id);
+                $form_element = new $element_data['type']($form, $block_id, $element_id);
+                $template = $form_element->getSettingsTemplate();
                 if ($template) {
                     echo $template->render();
                 }

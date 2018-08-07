@@ -4,6 +4,8 @@ class ERPSelectFormElement implements ERPFormElement
 {
 
     protected $form = null;
+    protected $block_id = null;
+    protected $element_id = null;
 
     static public function getName()
     {
@@ -20,28 +22,30 @@ class ERPSelectFormElement implements ERPFormElement
         return true;
     }
 
-    public function __construct(ERPForm $form)
+    public function __construct(ERPForm $form, $block_id, $element_id)
     {
         $this->form = $form;
+        $this->block_id = $block_id;
+        $this->element_id = $element_id;
     }
 
-    public function getSettingsTemplate($block_id, $element_id)
+    public function getSettingsTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
         $template = $tf->open("elements/settings/select.php");
         $template->form = $this->form;
-        $template->block_id = $block_id;
-        $template->element_id = $element_id;
+        $template->block_id = $this->block_id;
+        $template->element_id = $this->element_id;
         return $template;
     }
 
-    public function getPreviewTemplate($block_id, $element_id)
+    public function getPreviewTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
         $template = $tf->open("elements/preview/select.php");
         $template->form = $this->form;
-        $template->block_id = $block_id;
-        $template->element_id = $element_id;
+        $template->block_id = $this->block_id;
+        $template->element_id = $this->element_id;
         if (trim($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])) {
             if (stripos($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'], "SELECT ") === 0) {
                 try {
@@ -65,13 +69,13 @@ class ERPSelectFormElement implements ERPFormElement
         return $template;
     }
 
-    public function getElement($block_id, $element_id, $name, $value, $readonly)
+    public function getElement($name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
         $template = $tf->open("elements/formelement/select.php");
         $template->form = $this->form;
-        $template->block_id = $block_id;
-        $template->element_id = $element_id;
+        $template->block_id = $this->block_id;
+        $template->element_id = $this->element_id;
         if (trim($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])) {
             if (stripos($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'], "SELECT ") === 0) {
                 try {
@@ -101,5 +105,15 @@ class ERPSelectFormElement implements ERPFormElement
     public function mapValue($value)
     {
         return $value;
+    }
+
+    public function mapBeforeStoring($value)
+    {
+        return $value;
+    }
+
+    public function hookAfterStoring($newvalue, $oldvalue)
+    {
+
     }
 }

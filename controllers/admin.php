@@ -113,11 +113,15 @@ class AdminController extends PluginController
         if (!is_subclass_of($class, "ERPFormElement")) {
             throw new Exception(_("Form-Element hat falsche Klasse"));
         }
-        $form_element = new $class($this->form);
+        $form_element = new $class(
+            $this->form,
+            Request::option("block_id"),
+            Request::option("element_id")
+        );
         $output = array();
-        $template = $form_element->getSettingsTemplate(Request::option("block_id"), Request::option("element_id"));
+        $template = $form_element->getSettingsTemplate();
         $output['settings'] = $template ? $template->render() : null;
-        $template = $form_element->getPreviewTemplate(Request::option("block_id"), Request::option("element_id"));
+        $template = $form_element->getPreviewTemplate();
         $output['preview'] = $template ? $template->render() : null;
         $this->render_json($output);
     }

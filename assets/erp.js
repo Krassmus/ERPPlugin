@@ -33,8 +33,10 @@ STUDIP.ERP = {
         }
         element.data("element_id", element_id);
         element.find(".element_controls select, input").each(function () {
-            jQuery(this).attr("name", jQuery(this).attr("name").replace(":block_id", block.data("block_id")));
-            jQuery(this).attr("name", jQuery(this).attr("name").replace(":element_id", element_id));
+            if (jQuery(this).attr("name")) {
+                jQuery(this).attr("name", jQuery(this).attr("name").replace(":block_id", block.data("block_id")));
+                jQuery(this).attr("name", jQuery(this).attr("name").replace(":element_id", element_id));
+            }
         });
 
         element.appendTo(block.find(".elements_sortable"));

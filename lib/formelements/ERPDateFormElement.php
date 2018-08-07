@@ -1,6 +1,6 @@
 <?php
 
-class ERPSemesterFormElement implements ERPFormElement
+class ERPDateFormElement implements ERPFormElement
 {
 
     protected $form = null;
@@ -9,17 +9,17 @@ class ERPSemesterFormElement implements ERPFormElement
 
     static public function getName()
     {
-        return _("Semester");
+        return _("Datum");
     }
 
     static function forDataType()
     {
-        return array("varchar");
+        return array("integer", "int");
     }
 
     static function forFieldNames()
     {
-        return array("start_time", "semester_id");
+        return true;
     }
 
     public function __construct(ERPForm $form, $block_id, $element_id)
@@ -31,18 +31,13 @@ class ERPSemesterFormElement implements ERPFormElement
 
     public function getSettingsTemplate()
     {
-        $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/settings/semester.php");
-        $template->block_id = $this->block_id;
-        $template->element_id = $this->element_id;
-        $template->form = $this->form;
-        return $template;
+        return null;
     }
 
     public function getPreviewTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/preview/semester.php");
+        $template = $tf->open("elements/preview/date.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -52,7 +47,7 @@ class ERPSemesterFormElement implements ERPFormElement
     public function getElement($name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/formelement/semester.php");
+        $template = $tf->open("elements/formelement/date.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -64,19 +59,12 @@ class ERPSemesterFormElement implements ERPFormElement
 
     public function mapValue($value)
     {
-        if (is_numeric($value)) {
-            $semester = Semester::findByTimestamp($value);
-        } else {
-            $semester = Semester::find($value);
-        }
-        if ($semester) {
-            return $semester['name'];
-        }
+        return date("d.m.Y", $value);
     }
 
     public function mapBeforeStoring($value)
     {
-        return $value;
+        return strtotime($value);
     }
 
     public function hookAfterStoring($newvalue, $oldvalue)

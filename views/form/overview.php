@@ -26,7 +26,7 @@
                             foreach ((array) $block_data['elements'] as $element_id => $element_data) {
                                 if ($element_data['field'] === $fieldname && $element_data['type']) {
                                     $class = $element_data['type'];
-                                    $element_object = new $class($form);
+                                    $element_object = new $class($form, $block_id, $element_id);
                                     $mapped_value = $element_object->mapValue($item[$fieldname]);
                                     break 2;
                                 }

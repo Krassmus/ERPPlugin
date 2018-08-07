@@ -32,8 +32,6 @@ class FormController extends PluginController
     public function edit_action($form_id, $item_id = null)
     {
         PageLayout::setTitle(_("Objekt bearbeiten"));
-        //$class = $this->form['sorm_class'];
-        //$this->item = new $class($item_id);
         $this->item = PseudoSorm::create($this->form['sorm_class'], $item_id);
         if (Request::isPost()) {
             $data = Request::getArray("data");
@@ -55,6 +53,8 @@ class FormController extends PluginController
                 $allowed_data = array();
                 foreach ($data as $i => $value) {
                     if (in_array($i, $allowed_fields)) {
+                        //eventually map value
+
                         $allowed_data[$i] = $value;
                     }
                 }
@@ -62,8 +62,36 @@ class FormController extends PluginController
                 $allowed_data = $data;
             }
 
+            foreach ($allowed_data as $i => $value) {
+                foreach ((array) $form_settings['blocks'] as $block) {
+                    foreach ((array) $block['elements'] as $element) {
+                        if ($element['field'] === $i) {
+                            $class = $element['type'];
+                            $form_element = new $class($this->form);
+                            $allowed_data[$i] = $form_element->mapBeforeStoring($value);
+                            break 2;
+                        }
+                    }
+                }
+            }
+
+            $olddata = $this->item->toRawArray();
             $this->item->setData($allowed_data);
             $this->item->store();
+
+            //Post-storing hook:
+            foreach ($allowed_data as $i => $value) {
+                foreach ((array) $form_settings['blocks'] as $block) {
+                    foreach ((array) $block['elements'] as $element) {
+                        if ($element['field'] === $i) {
+                            $class = $element['type'];
+                            $form_element = new $class($this->form);
+                            $form_element->hookAfterStoring($value, $olddata[$i]);
+                        }
+                    }
+                }
+            }
+
             PageLayout::postSuccess(_("Daten wurden gespeichert."));
             $this->redirect("form/overview/".$form_id);
             return;
