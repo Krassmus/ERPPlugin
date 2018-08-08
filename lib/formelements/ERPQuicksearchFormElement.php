@@ -60,8 +60,9 @@ class ERPQuicksearchFormElement implements ERPFormElement
         $template->value = $value;
         $template->readonly = $readonly;
         $template->search = new SQLSearch(
-            $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'],
-            $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['placeholder']
+            $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'],
+            $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['placeholder'],
+            "Institut_id"
         );
         return $template;
     }

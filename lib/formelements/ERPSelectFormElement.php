@@ -46,17 +46,17 @@ class ERPSelectFormElement implements ERPFormElement
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
-        if (trim($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])) {
-            if (stripos($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'], "SELECT ") === 0) {
+        if (trim($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'])) {
+            if (stripos($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'], "SELECT ") === 0) {
                 try {
                     $template->options = DBManager::get()
-                        ->query($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])
+                        ->query($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'])
                         ->fetchAll();
                 } catch (Exception $e) {
                     $template->options = array();
                 }
             } else {
-                $options = $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'];
+                $options = $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'];
                 $options = explode("\n", $options);
                 $options = array_map(function ($option) {
                     return explode("=", $option, 2);
@@ -76,17 +76,17 @@ class ERPSelectFormElement implements ERPFormElement
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
-        if (trim($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])) {
-            if (stripos($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'], "SELECT ") === 0) {
+        if (trim($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'])) {
+            if (stripos($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'], "SELECT ") === 0) {
                 try {
                     $template->options = DBManager::get()
-                        ->query($this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'])
+                        ->query($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'])
                         ->fetchAll();
                 } catch (Exception $e) {
                     $template->options = array();
                 }
             } else {
-                $options = $this->form['form_settings']['blocks'][$block_id]['elements'][$element_id]['sql'];
+                $options = $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'];
                 $options = explode("\n", $options);
                 $options = array_map(function ($option) {
                     return explode("=", $option, 2);
