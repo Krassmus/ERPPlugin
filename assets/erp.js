@@ -84,7 +84,25 @@ STUDIP.ERP = {
                 jQuery(element).find(".element_input").html(json.preview ? json.preview : "");
             }
         });
-    }
+    },
+    addNewFilter: function () {
+        var newfilter = jQuery(".block_template").clone();
+        newfilter.removeClass("block_template");
+        var filter_id = "f_" + Math.floor(Math.random() * 1000000);
+        var filter_ids = [];
+        jQuery(".erp_editform form fieldset").each(function () {
+            block_ids.push(jQuery(this).data("filter_id"));
+        });
+        while (_.includes(filter_ids, filter_id)) {
+            filter_id = "f_" + Math.floor(Math.random() * 1000000);
+        }
+        newfilter.data("filter_id", filter_id);
+        newfilter.find("legend input").attr("name", "overview_settings[filters][" + filter_id + "][name]");
+        newfilter.appendTo(".erp_editform form");
+
+        return false;
+    },
+
 };
 
 jQuery(function () {

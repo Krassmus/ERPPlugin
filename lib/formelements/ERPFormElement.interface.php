@@ -18,6 +18,13 @@ interface ERPFormElement
 
     public function mapValue($value);
 
+    /**
+     * Changes the $value from the request to the $value that should be inserted in the database.
+     * For instance you could map a date string like 12.03.2018 to a Unix-Timestamp.
+     * @param string $value : something from the request
+     * @return string : another value
+     *
+     */
     public function mapBeforeStoring($value);
 
     public function hookAfterStoring($newvalue, $oldvalue, $item);

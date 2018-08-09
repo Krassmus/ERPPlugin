@@ -13,6 +13,12 @@ foreach (scandir(__DIR__."/lib/formelements") as $file) {
         include_once __DIR__."/lib/formelements/".$file;
     }
 }
+require_once __DIR__."/lib/filter/ERPFilter.interface.php";
+foreach (scandir(__DIR__."/lib/filter") as $file) {
+    if ($file[0] !== ".") {
+        include_once __DIR__."/lib/filter/".$file;
+    }
+}
 
 
 class ERPPlugin extends StudIPPlugin implements SystemPlugin

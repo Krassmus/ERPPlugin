@@ -14,7 +14,7 @@
             <li>
                 <label>
                     <input type="checkbox"
-                           name="data[overview_settings][fields][]"
+                           name="overview_settings[fields][]"
                            value="<?= htmlReady($fieldname) ?>"
                            onChange="jQuery(this).closest('li').find('.mapper').toggle(jQuery(this).is(':checked'));"
                            <?= in_array($fieldname, (array) $overview_settings['fields']) ? "checked" : "" ?>>
@@ -26,7 +26,7 @@
                 <div class="mapper" style="<?= in_array($fieldname, (array) $overview_settings['fields']) ? "" : "display: none; " ?>">
                     <label>
                         <?= _("Beschriftung der Spalte") ?>
-                        <input type="text" name="data[overview_settings][fielddata][<?= htmlReady($fieldname) ?>][title]" value="<?= htmlReady($overview_settings['fielddata'][$fieldname]['title'] ?: "") ?>">
+                        <input type="text" name="overview_settings[fielddata][<?= htmlReady($fieldname) ?>][title]" value="<?= htmlReady($overview_settings['fielddata'][$fieldname]['title'] ?: "") ?>">
                     </label>
                 </div>
             </li>
@@ -35,9 +35,9 @@
 
         <label>
             <?= _("Nach welcher Spalte soll sortiert werden?") ?>
-            <select name="data[overview_settings][sort]">
+            <select name="overview_settings[sort]">
                 <? foreach ($fieldnames as $fieldname) : ?>
-                    <option value="<?= htmlReady($fieldname) ?>"<?= $fieldname == $form['overview_settings']['sort'] ? " selected" : "" ?>>
+                    <option value="<?= htmlReady($fieldname) ?>"<?= $fieldname == $overview_settings['sort'] ? " selected" : "" ?>>
                         <?= htmlReady($fieldname) ?>
                     </option>
                 <? endforeach ?>
@@ -45,11 +45,11 @@
         </label>
         <label>
             <?= _("Wie soll sortiert werden?") ?>
-            <select name="data[overview_settings][sort_desc]">
+            <select name="overview_settings[sort_desc]">
                 <option value="0">
                     <?= _("Aufsteigend") ?>
                 </option>
-                <option value="1"<?= $form['overview_settings']['sort_desc'] > 0 ? " selected" : "" ?>>
+                <option value="1"<?= $overview_settings['sort_desc'] > 0 ? " selected" : "" ?>>
                     <?= _("Absteigend") ?>
                 </option>
             </select>
@@ -66,7 +66,7 @@
                 <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
                     <li>
                         <label>
-                            <input type="checkbox" name="data[overview_settings][createroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
+                            <input type="checkbox" name="overview_settings[createroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
                             <?= htmlReady($role->getRolename()) ?>
                         </label>
                     </li>
@@ -85,7 +85,7 @@
                 <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
                     <li>
                         <label>
-                            <input type="checkbox" name="data[overview_settings][deleteroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
+                            <input type="checkbox" name="overview_settings[deleteroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
                             <?= htmlReady($role->getRolename()) ?>
                         </label>
                     </li>
@@ -94,8 +94,37 @@
         </ul>
     </fieldset>
 
+    <fieldset>
+        <legend>
+            <?= _("Filter") ?>
+        </legend>
+
+        <ul class="clean">
+            <? foreach ((array) $overview_settings['filters'] as $filter_id => $filter_data) : ?>
+                <?= $this->render_partial("admin/_filter", array(
+                    'filter_id' => $filter_id,
+                    'form' => $form,
+                    'filter_classes' => $filter_classes
+                )) ?>
+            <? endforeach ?>
+        </ul>
+
+        <a href="">
+            <?= Icon::create("add", "clickable")->asImg(20, array('class' => "text-bottom")) ?>
+            <?= _("Filter hinzufügen") ?>
+        </a>
+
+    </fieldset>
+
     <div data-dialog-button>
         <?= \Studip\Button::create(_("Speichern")) ?>
     </div>
 
 </form>
+
+<!-- Filter template -->
+<?= $this->render_partial("admin/_filter", array(
+    'filter_id' => null,
+    'form' => $form,
+    'filter_classes' => $filter_classes
+)) ?>

@@ -73,7 +73,7 @@ class AdminController extends PluginController
         PageLayout::setTitle(_("Übersicht bearbeiten"));
         $this->form = new ERPForm($form_id);
         if (Request::isPost()) {
-            $this->form->setData(Request::getArray("data"));
+            $this->form['overview_settings'] = Request::getArray("overview_settings");
             $this->form->store();
             PageLayout::postSuccess(_("Daten wurden gespeichert"));
             $this->redirect("admin/overview");
@@ -89,6 +89,9 @@ class AdminController extends PluginController
             $fields = array_merge($fields, $userinfometadata['fields']);
         }
         $this->fieldnames = array_keys($fields);
+        $this->filter_classes = array_filter(get_declared_classes(), function ($c) {
+            return is_subclass_of($c, "ERPFilter");
+        });
     }
 
     public function editform_action($form_id)
