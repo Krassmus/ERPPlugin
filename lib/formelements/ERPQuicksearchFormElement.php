@@ -58,6 +58,9 @@ class ERPQuicksearchFormElement implements ERPFormElement
         $template->element_id = $this->element_id;
         $template->name = $name;
         $template->value = $value;
+        if ($value) {
+            $template->value_display = $this->mapValue($value);
+        }
         $template->readonly = $readonly;
         $template->search = new SQLSearch(
             $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'],
@@ -69,9 +72,15 @@ class ERPQuicksearchFormElement implements ERPFormElement
 
     public function mapValue($value)
     {
-        //Should display the name
-        $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'];
-        return $value;
+        //Should display the name and not the id
+        if ($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']) {
+            $statement = DBManager::get()->prepare($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']);
+            $statement->execute(array('input' => $value));
+            $result = $statement->fetch(PDO::FETCH_COLUMN, 0);
+            return $result ?: "";
+        } else {
+            return $value;
+        }
     }
 
     public function mapBeforeStoring($value)
