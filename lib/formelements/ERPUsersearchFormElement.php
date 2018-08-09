@@ -1,6 +1,6 @@
 <?php
 
-class ERPQuicksearchFormElement implements ERPFormElement
+class ERPUsersearchFormElement implements ERPFormElement
 {
 
     protected $form = null;
@@ -9,7 +9,7 @@ class ERPQuicksearchFormElement implements ERPFormElement
 
     static public function getName()
     {
-        return _("Quicksearch (SQL)");
+        return _("Personensuche");
     }
 
     static function forDataType()
@@ -19,7 +19,7 @@ class ERPQuicksearchFormElement implements ERPFormElement
 
     static function forFieldNames()
     {
-        return true;
+        return array("user_id", "autor_id", "dozent_id");
     }
 
     public function __construct(ERPForm $form, $block_id, $element_id)
@@ -32,7 +32,7 @@ class ERPQuicksearchFormElement implements ERPFormElement
     public function getSettingsTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/settings/quicksearch.php");
+        $template = $tf->open("elements/settings/usersearch.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -42,7 +42,7 @@ class ERPQuicksearchFormElement implements ERPFormElement
     public function getPreviewTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/preview/quicksearch.php");
+        $template = $tf->open("elements/preview/usersearch.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -52,7 +52,7 @@ class ERPQuicksearchFormElement implements ERPFormElement
     public function getElement($name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/formelement/quicksearch.php");
+        $template = $tf->open("elements/formelement/usersearch.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -62,24 +62,15 @@ class ERPQuicksearchFormElement implements ERPFormElement
             $template->value_display = $this->mapValue($value);
         }
         $template->readonly = $readonly;
-        $template->search = new SQLSearch(
-            $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['sql'],
-            $this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['placeholder'],
-            "Institut_id"
-        );
+        $template->search = new StandardSearch("user_id");
         return $template;
     }
 
     public function mapValue($value)
     {
-        //Should display the name and not the id
-        if ($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']) {
-            $statement = DBManager::get()->prepare($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']);
-            $statement->execute(array('input' => $value));
-            $result = $statement->fetch(PDO::FETCH_COLUMN, 0);
-            return $result ?: "";
-        } else {
-            return $value;
+        $user = User::find($value);
+        if ($user) {
+            return $user->getFullName();
         }
     }
 
@@ -90,6 +81,19 @@ class ERPQuicksearchFormElement implements ERPFormElement
 
     public function hookAfterStoring($newvalue, $oldvalue, $item)
     {
-
+        var_dump($newvalue);
+        var_dump($oldvalue);
+        var_dump($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['notify']);
+        if (($newvalue !== $oldvalue)
+                && $newvalue
+                && ($newvalue !== $GLOBALS['user']->id)
+                && ($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['notify'])) {
+            //Notification an Nutzer senden
+            PersonalNotifications::add(
+                $newvalue,
+                "",
+                _("Sie sind eingetragen worden.")
+            );
+        }
     }
 }

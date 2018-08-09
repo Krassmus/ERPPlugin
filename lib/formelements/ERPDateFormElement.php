@@ -59,7 +59,9 @@ class ERPDateFormElement implements ERPFormElement
 
     public function mapValue($value)
     {
-        return date("d.m.Y", $value);
+        if (is_numeric($value)) {
+            return $value ? date("d.m.Y", $value) : "";
+        }
     }
 
     public function mapBeforeStoring($value)
@@ -67,7 +69,7 @@ class ERPDateFormElement implements ERPFormElement
         return strtotime($value);
     }
 
-    public function hookAfterStoring($newvalue, $oldvalue)
+    public function hookAfterStoring($newvalue, $oldvalue, $item)
     {
 
     }

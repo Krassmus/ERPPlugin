@@ -67,7 +67,7 @@ class ERPTextareaFormElement implements ERPFormElement
         return $value;
     }
 
-    public function hookAfterStoring($newvalue, $oldvalue)
+    public function hookAfterStoring($newvalue, $oldvalue, $item)
     {
 
     }

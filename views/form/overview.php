@@ -32,9 +32,9 @@
                                 }
                             }
                         } ?>
-                        <?= htmlReady($mapped_value
-                            ? (is_a($mapped_value, "Flexi_Template") ? $mapped_value->render() : $mapped_value)
-                            : $item[$fieldname]) ?>
+                        <?= $mapped_value !== null
+                            ? (is_a($mapped_value, "Flexi_Template") ? $mapped_value->render() : htmlReady($mapped_value))
+                            : '<span title="'.htmlReady($item[$fieldname]).'">?</span>' ?>
                     </td>
                 <? endforeach ?>
                 <td class="actions">

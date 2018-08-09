@@ -63,11 +63,11 @@ class FormController extends PluginController
             }
 
             foreach ($allowed_data as $i => $value) {
-                foreach ((array) $form_settings['blocks'] as $block) {
-                    foreach ((array) $block['elements'] as $element) {
+                foreach ((array) $form_settings['blocks'] as $block_id => $block) {
+                    foreach ((array) $block['elements'] as $element_id => $element) {
                         if ($element['field'] === $i) {
                             $class = $element['type'];
-                            $form_element = new $class($this->form);
+                            $form_element = new $class($this->form, $block_id, $element_id);
                             $allowed_data[$i] = $form_element->mapBeforeStoring($value);
                             break 2;
                         }
@@ -81,12 +81,12 @@ class FormController extends PluginController
 
             //Post-storing hook:
             foreach ($allowed_data as $i => $value) {
-                foreach ((array) $form_settings['blocks'] as $block) {
-                    foreach ((array) $block['elements'] as $element) {
+                foreach ((array) $form_settings['blocks'] as $block_id => $block) {
+                    foreach ((array) $block['elements'] as $element_id => $element) {
                         if ($element['field'] === $i) {
                             $class = $element['type'];
-                            $form_element = new $class($this->form);
-                            $form_element->hookAfterStoring($value, $olddata[$i]);
+                            $form_element = new $class($this->form, $block_id, $element_id);
+                            $form_element->hookAfterStoring($value, $olddata[$i], $this->item);
                         }
                     }
                 }
