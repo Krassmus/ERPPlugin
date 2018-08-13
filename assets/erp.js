@@ -86,19 +86,23 @@ STUDIP.ERP = {
         });
     },
     addNewFilter: function () {
-        var newfilter = jQuery(".block_template").clone();
-        newfilter.removeClass("block_template");
+        var newfilter = jQuery(".filter_template").clone();
+        newfilter.removeClass("filter_template");
         var filter_id = "f_" + Math.floor(Math.random() * 1000000);
         var filter_ids = [];
-        jQuery(".erp_editform form fieldset").each(function () {
-            block_ids.push(jQuery(this).data("filter_id"));
+        jQuery(".erp_editoverview form .filter").each(function () {
+            filter_ids.push(jQuery(this).data("filter_id"));
         });
         while (_.includes(filter_ids, filter_id)) {
             filter_id = "f_" + Math.floor(Math.random() * 1000000);
         }
         newfilter.data("filter_id", filter_id);
-        newfilter.find("legend input").attr("name", "overview_settings[filters][" + filter_id + "][name]");
-        newfilter.appendTo(".erp_editform form");
+        newfilter.find("select, input, textarea").each(function () {
+            if (jQuery(this).attr("name")) {
+                jQuery(this).attr("name", jQuery(this).attr("name").replace(":filter_id", filter_id));
+            }
+        });
+        newfilter.appendTo(".erp_editoverview form .filters");
 
         return false;
     },
@@ -112,4 +116,5 @@ jQuery(function () {
     jQuery(document).on("click", ".erp_editform .element .element_remover", STUDIP.ERP.removeElement);
     jQuery(document).on("click", ".erp_editform .element .element_toggler", STUDIP.ERP.toggleElementControls);
     jQuery(document).on("click", ".erp_editform .erp_form_element", STUDIP.ERP.selectFormElement);
+    jQuery(document).on("click", ".erp_editoverview .add_filter", STUDIP.ERP.addNewFilter);
 });
