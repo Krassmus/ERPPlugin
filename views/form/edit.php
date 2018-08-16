@@ -21,7 +21,11 @@
                             || $GLOBALS['perm']->have_perm("root")
                             || count(array_intersect($role_ids, (array) $element_data['edit_permissions'])) > 0)
                     );
-                    echo $template->render();
+                    if (is_a($template, "Flexi_PhpTemplate")) {
+                        echo $template->render();
+                    } else {
+                        echo $template;
+                    }
                 }
                 ?>
             <? endforeach ?>

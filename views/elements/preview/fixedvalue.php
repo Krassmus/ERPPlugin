@@ -1,0 +1,2 @@
+&lt; <strong><?= _("Fester Wert ") ?></strong>
+<?= htmlReady($form['form_settings']['blocks'][$block_id]['elements'][$element_id]['field']." = ".$form['form_settings']['blocks'][$block_id]['elements'][$element_id]['value']) ?> &gt;

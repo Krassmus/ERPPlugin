@@ -13,13 +13,29 @@ class FormController extends PluginController
 
     public function overview_action($form_id)
     {
-        //$class = $this->form['sorm_class'];
-        //$object = new $class();
         $object = PseudoSorm::create($this->form['sorm_class']);
         $sorm_metadata = $object->getTableMetadata();
 
         $query = \ERP\SQLQuery::table($sorm_metadata['table']);
-        if ($this->form['overview_settings']['sort']) {
+        $overview_settings = $this->form['overview_settings']->getArrayCopy();
+        foreach ((array) $overview_settings['filters'] as $filter_id => $filter) {
+            if (Request::get("filter_".$filter_id)) {
+                foreach ((array) $filter['joins'] as $join) {
+                    $query->join(
+                        $join['alias'],
+                        $join['table'],
+                        $join['on'],
+                        $join['inner'] ? "INNER JOIN" : "LEFT JOIN"
+                    );
+                }
+                $query->where(
+                    md5($filter['where']),
+                    str_replace(":input", ":".'filter_'.$filter_id, $filter['where']),
+                    array('filter_'.$filter_id => Request::get("filter_".$filter_id))
+                );
+            }
+        }
+        if ($overview_settings['sort']) {
             $query->orderBy($this->form['overview_settings']['sort']. " ".($this->form['overview_settings']['sort_desc'] ? "DESC" : "ASC"));
         }
         if ($query->count() <= 500) {
