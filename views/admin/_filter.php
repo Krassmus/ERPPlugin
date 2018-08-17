@@ -5,7 +5,7 @@ $overview_settings = $form['overview_settings'] ? $form['overview_settings']->ge
 $filter_data || $filter_data = $overview_settings['filters'][$filter_id];
 ?>
 <li data-filter_id="<?= htmlReady($filter_id) ?>" class="filter <?= $isTemplate ? "filter_template" : "" ?>">
-    <select name="data[overview_settings][filters][<?= htmlReady($filter_id) ?>][type]">
+    <select name="overview_settings[filters][<?= htmlReady($filter_id) ?>][type]">
         <option></option>
         <? foreach ($filter_classes as $class) : ?>
         <option value="<?= htmlReady($class) ?>"<?= $filter_data['type'] === $class ? " selected" : "" ?>>
@@ -13,7 +13,7 @@ $filter_data || $filter_data = $overview_settings['filters'][$filter_id];
         </option>
         <? endforeach ?>
     </select>
-    <select name="data[overview_settings][filters][<?= htmlReady($filter_id) ?>][permissions][]"
+    <select name="overview_settings[filters][<?= htmlReady($filter_id) ?>][permissions][]"
             multiple
             class="multiple"
             aria-label="<?= _("Welche Rollen sollen den Filter bekommen?") ?>"
@@ -28,6 +28,13 @@ $filter_data || $filter_data = $overview_settings['filters'][$filter_id];
             <? endif ?>
         <? endforeach ?>
     </select>
-    <textarea name="data[overview_settings][filters][<?= htmlReady($filter_id) ?>][where]"
-              placeholder="name LIKE filter2"></textarea>
+    <div class="filter_settings">
+        <? if ($filter_data['type']) {
+            $filter_object = new $filter_data['type']($form, $filter_id);
+            $template = $filter_object->getSettingsTemplate();
+            if ($template) {
+                echo $template->render();
+            }
+        } ?>
+    </div>
 </li>

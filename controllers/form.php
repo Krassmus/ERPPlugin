@@ -19,7 +19,12 @@ class FormController extends PluginController
         $query = \ERP\SQLQuery::table($sorm_metadata['table']);
         $overview_settings = $this->form['overview_settings']->getArrayCopy();
         foreach ((array) $overview_settings['filters'] as $filter_id => $filter) {
-            if (Request::get("filter_".$filter_id)) {
+            $filter_class = $filter['type'];
+            $filter_object = new $filter_class($this->form, $filter_id);
+            $filter_object->addToSidebar();
+            $filter_object->addFilter($query);
+
+            /*if (Request::get("filter_".$filter_id)) {
                 foreach ((array) $filter['joins'] as $join) {
                     $query->join(
                         $join['alias'],
@@ -33,7 +38,7 @@ class FormController extends PluginController
                     str_replace(":input", ":".'filter_'.$filter_id, $filter['where']),
                     array('filter_'.$filter_id => Request::get("filter_".$filter_id))
                 );
-            }
+            }*/
         }
         if ($overview_settings['sort']) {
             $query->orderBy($this->form['overview_settings']['sort']. " ".($this->form['overview_settings']['sort_desc'] ? "DESC" : "ASC"));
@@ -125,6 +130,18 @@ class FormController extends PluginController
             $this->redirect("form/overview/".$form_id);
             return;
         }
+    }
+
+    public function set_user_config_action($form_id)
+    {
+        if (Request::get("name") && strpos(Request::get("name"), "erpfilter_") === 0) {
+            if (Request::get("reset-search")) {
+                $GLOBALS['user']->cfg->store(Request::get("name"), null);
+            } elseif (Request::isPost()) {
+                $GLOBALS['user']->cfg->store(Request::get("name"), Request::get(Request::get("name")));
+            }
+        }
+        $this->redirect("form/overview/".$form_id);
     }
 
 }

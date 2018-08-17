@@ -130,3 +130,8 @@
         'filter_classes' => $filter_classes
     )) ?>
 </div>
+<script>
+    jQuery(function () {
+        jQuery(".erp_editoverview form .filters select[multiple]").select2();
+    });
+</script>

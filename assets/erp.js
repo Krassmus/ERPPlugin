@@ -104,6 +104,8 @@ STUDIP.ERP = {
         });
         newfilter.appendTo(".erp_editoverview form .filters");
 
+        jQuery(".erp_editoverview form .filters select[multiple]").select2();
+
         return false;
     },
 

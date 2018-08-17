@@ -11,4 +11,6 @@ interface ERPFilter
 
     public function addFilter(\ERP\SQLQuery $query);
 
+    public function addToSidebar();
+
 }
