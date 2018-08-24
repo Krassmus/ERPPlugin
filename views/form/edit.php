@@ -7,6 +7,9 @@
     $role_ids = array_keys($roles);
     ?>
     <? foreach ((array) $form_settings['blocks'] as $block_id => $block) : ?>
+        <? if ($GLOBALS['perm']->have_perm("root")
+                || in_array("all", (array) $block['visibility'])
+                || count(array_intersect((array) $block['visibility'], $role_ids)) > 0) : ?>
         <fieldset>
             <legend><?= htmlReady($block['name']) ?></legend>
             <? foreach ((array) $block['elements'] as $element_id => $element_data) : ?>
@@ -30,6 +33,7 @@
                 ?>
             <? endforeach ?>
         </fieldset>
+        <? endif ?>
     <? endforeach ?>
     <div data-dialog-button>
         <?= \Studip\Button::create(_("Speichern")) ?>

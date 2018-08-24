@@ -13,7 +13,9 @@ STUDIP.ERP = {
         newblock.data("block_id", block_id);
         newblock.find("legend input").val("Block " + (jQuery(".erp_editform form fieldset").length + 1));
         newblock.find("legend input").attr("name", "form_settings[blocks][" + block_id + "][name]");
+        newblock.find("select.visibility").attr("name", "form_settings[blocks][" + block_id + "][visibility][]");
         newblock.appendTo(".erp_editform form");
+        jQuery(newblock).find("select.visibility").select2({width: 'resolve'});
 
         return false;
     },

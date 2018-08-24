@@ -62,12 +62,15 @@ class FormController extends PluginController
                 $roles = RolePersistence::getAssignedRoles($GLOBALS['user']->id, true);
                 $role_ids = array_keys($roles);
                 $allowed_fields = array();
-                foreach ((array) $form_settings['blocks'] as $block) {
-                    foreach ((array) $block['elements'] as $element) {
-                        if ($element['field']
-                                && (in_array("all", (array) $element['edit_permissions'])
-                                    || count(array_intersect($role_ids, (array) $element['edit_permissions'])))) {
-                            $allowed_fields[] = $element['field'];
+                foreach ((array) $form_settings['blocks'] as $block_id => $block) {
+                    if (in_array("all", (array) $block['visibility'])
+                            || count(array_intersect((array) $block['visibility'], $role_ids)) > 0) {
+                        foreach ((array) $block['elements'] as $element) {
+                            if ($element['field']
+                                && (in_array("all", (array)$element['edit_permissions'])
+                                    || count(array_intersect($role_ids, (array)$element['edit_permissions'])))) {
+                                $allowed_fields[] = $element['field'];
+                            }
                         }
                     }
                 }
