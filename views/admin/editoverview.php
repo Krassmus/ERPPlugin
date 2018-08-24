@@ -67,7 +67,30 @@
                     <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
                         <li>
                             <label>
-                                <input type="checkbox" name="overview_settings[createroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
+                                <input type="checkbox" name="overview_settings[createroles][]"
+                                       <?= in_array($role->getRoleid(), (array) $overview_settings['createroles']) ? " selected" : "" ?>
+                                       value="<?= htmlReady($role->getRoleid()) ?>">
+                                <?= htmlReady($role->getRolename()) ?>
+                            </label>
+                        </li>
+                    <? endif ?>
+                <? endforeach ?>
+            </ul>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+                <?= _("Wer darf Objekte bearbeiten?") ?>
+            </legend>
+            <ul class="clean">
+                <? $roles = $form->getRoles() ?>
+                <? foreach (RolePersistence::getAllRoles() as $role) : ?>
+                    <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
+                        <li>
+                            <label>
+                                <input type="checkbox" name="overview_settings[editroles][]"
+                                       <?= in_array($role->getRoleid(), (array) $overview_settings['editroles']) ? " selected" : "" ?>
+                                       value="<?= htmlReady($role->getRoleid()) ?>">
                                 <?= htmlReady($role->getRolename()) ?>
                             </label>
                         </li>
@@ -86,7 +109,9 @@
                     <? if ($role->getRoleid() > 1 && in_array($role->getRoleid(), $roles)) : ?>
                         <li>
                             <label>
-                                <input type="checkbox" name="overview_settings[deleteroles][]" value="<?= htmlReady($role->getRoleid()) ?>">
+                                <input type="checkbox" name="overview_settings[deleteroles][]"
+                                       <?= in_array($role->getRoleid(), (array) $overview_settings['deleteroles']) ? " selected" : "" ?>
+                                       value="<?= htmlReady($role->getRoleid()) ?>">
                                 <?= htmlReady($role->getRolename()) ?>
                             </label>
                         </li>

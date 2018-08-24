@@ -38,9 +38,11 @@
                     </td>
                 <? endforeach ?>
                 <td class="actions">
-                    <a href="<?= PluginEngine::getLink($plugin, array(), "form/edit/".$form->getId()."/".$item->getId()) ?>" data-dialog>
-                        <?= Icon::create("edit", "clickable")->asImg(20, array('class' => "text-bottom")) ?>
-                    </a>
+                    <? if ($form->allowedToEdit()) : ?>
+                        <a href="<?= PluginEngine::getLink($plugin, array(), "form/edit/".$form->getId()."/".$item->getId()) ?>" data-dialog>
+                            <?= Icon::create("edit", "clickable")->asImg(20, array('class' => "text-bottom")) ?>
+                        </a>
+                    <? endif ?>
                     <? if ($form->allowedToDelete()) : ?>
                         <form action="<?= PluginEngine::getLink($plugin, array(), "form/delete/".$form->getId()."/".$item->getId()) ?>" style="border: none; display: inline;" method="post">
                             <button style="border: 0; background: none; cursor: pointer;" title="<?= _("Objekt löschen") ?>" onClick="return window.confirm('<?= _("Objekt wirklich löschen?") ?>');">

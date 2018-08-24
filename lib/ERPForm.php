@@ -74,7 +74,18 @@ class ERPForm extends SimpleORMap
         $roles = RolePersistence::getAssignedRoles($user_id, true);
         $role_ids = array_keys($roles);
         return count(array_intersect($role_ids, (array) $overview_settings['createroles'])) > 0;
-        //$overview_settings['createroles']
+    }
+
+    public function allowedToEdit($user_id = null)
+    {
+        $user_id || $user_id = $GLOBALS['user']->id;
+        if ($GLOBALS['perm']->have_perm("root", $user_id)) {
+            return true;
+        }
+        $overview_settings = $this['overview_settings'] ? $this['overview_settings']->getArrayCopy() : array();
+        $roles = RolePersistence::getAssignedRoles($user_id, true);
+        $role_ids = array_keys($roles);
+        return count(array_intersect($role_ids, (array) $overview_settings['editroles'])) > 0;
     }
 
     public function allowedToDelete($user_id = null)
@@ -87,6 +98,5 @@ class ERPForm extends SimpleORMap
         $roles = RolePersistence::getAssignedRoles($user_id, true);
         $role_ids = array_keys($roles);
         return count(array_intersect($role_ids, (array) $overview_settings['deleteroles'])) > 0;
-
     }
 }
