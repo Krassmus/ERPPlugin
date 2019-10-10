@@ -16,6 +16,7 @@
                 <option value="/start"<?= $form['navigation'] === "/start" ? " selected" : "" ?>><?= _("Startseite") ?></option>
                 <option value="/"<?= $form['navigation'] === "/" ? " selected" : "" ?>><?= _("Top-Navigation") ?></option>
                 <option value="/tools"<?= $form['navigation'] === "/tools" ? " selected" : "" ?>><?= _("Tools") ?></option>
+                <option value="/course"<?= $form['navigation'] === "/course" ? " selected" : "" ?>><?= _("Veranstaltung") ?></option>
             </select>
         </label>
 

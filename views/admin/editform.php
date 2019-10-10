@@ -20,8 +20,8 @@
                     <?= _("Element hinzufügen") ?>
                 </a>
 
-                <div<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
-                    <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-bottom", 'title' => _("Wer darf diesen Block sehen?"))) ?>
+                <div class="bottom"<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
+                    <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-middle", 'title' => _("Wer darf diesen Block sehen?"))) ?>
                     <select name="form_settings[blocks][b_1][visibility][]"
                             class="visibility" multiple>
                         <option value="all" selected><?= _("Alle") ?></option>
@@ -65,8 +65,8 @@
                         <?= _("Element hinzufügen") ?>
                     </a>
 
-                    <div<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
-                        <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-bottom", 'title' => _("Wer darf diesen Block sehen?"))) ?>
+                    <div class="bottom"<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
+                        <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-middle", 'title' => _("Wer darf diesen Block sehen?"))) ?>
                         <select name="form_settings[blocks][<?= htmlReady($block_id) ?>][visibility][]"
                                 class="visibility" multiple>
                             <option value="all"<?= in_array("all", (array) $form_settings['blocks'][$block_id]['visibility']) || $form_settings['blocks'][$block_id]['visibility'] === null ? " selected" : "" ?>><?= _("Alle") ?></option>
@@ -107,8 +107,8 @@
             <?= _("Element hinzufügen") ?>
         </a>
 
-        <div<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
-            <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-bottom", 'title' => _("Wer darf diesen Block sehen?"))) ?>
+        <div class="bottom"<?= count($roles) > 1 ? '' : ' style="display: none"' ?>>
+            <?= Icon::create("visibility-visible", "info")->asImg(20, array('class' => "text-middle", 'title' => _("Wer darf diesen Block sehen?"))) ?>
             <select class="visibility" multiple>
                 <option value="all" selected><?= _("Alle") ?></option>
                 <? foreach (RolePersistence::getAllRoles() as $role) : ?>

@@ -1,6 +1,6 @@
 <?php
 
-class ERPTextFormElement implements ERPFormElement
+class ERPFileElement implements ERPFormElement
 {
 
     protected $form = null;
@@ -9,12 +9,12 @@ class ERPTextFormElement implements ERPFormElement
 
     static public function getName()
     {
-        return _("Textzeile");
+        return _("Datei");
     }
 
     static function forDataType()
     {
-        return array("varchar", "text");
+        return array("varchar");
     }
 
     static function forFieldNames()
@@ -32,12 +32,18 @@ class ERPTextFormElement implements ERPFormElement
     public function getSettingsTemplate()
     {
         return null;
+        /*$tf = new Flexi_TemplateFactory(__DIR__."/../../views");
+        $template = $tf->open("elements/settings/file.php");
+        $template->form = $this->form;
+        $template->block_id = $this->block_id;
+        $template->element_id = $this->element_id;
+        return $template;*/
     }
 
     public function getPreviewTemplate()
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/preview/text.php");
+        $template = $tf->open("elements/preview/file.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
@@ -47,19 +53,30 @@ class ERPTextFormElement implements ERPFormElement
     public function getElement($name, $value, $readonly)
     {
         $tf = new Flexi_TemplateFactory(__DIR__."/../../views");
-        $template = $tf->open("elements/formelement/text.php");
+        $template = $tf->open("elements/formelement/file.php");
         $template->form = $this->form;
         $template->block_id = $this->block_id;
         $template->element_id = $this->element_id;
         $template->name = $name;
         $template->value = $value;
+        if ($value) {
+            $template->value_display = $this->mapValue($value);
+        }
         $template->readonly = $readonly;
         return $template;
     }
 
     public function mapValue($value)
     {
-        return $value;
+        //Should display the name and not the id
+        if ($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']) {
+            $statement = DBManager::get()->prepare($this->form['form_settings']['blocks'][$this->block_id]['elements'][$this->element_id]['mapper']);
+            $statement->execute(array('input' => $value));
+            $result = $statement->fetch(PDO::FETCH_COLUMN, 0);
+            return $result ?: "";
+        } else {
+            return $value;
+        }
     }
 
     public function mapBeforeStoring($value)
